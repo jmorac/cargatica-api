@@ -12,7 +12,16 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // ✅ Route middleware aliases (use these names in routes)
+        $middleware->alias([
+            'auth'        => \App\Http\Middleware\Authenticate::class,
+            'authCliente' => \App\Http\Middleware\AuthenticateClient::class,
+        ]);
+
+        // (Optional) add to groups if you want them auto-applied:
+        // $middleware->group('api', [
+        //     \App\Http\Middleware\AuthenticateClient::class,
+        // ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
