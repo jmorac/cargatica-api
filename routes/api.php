@@ -79,6 +79,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
             Route::get('/', 'ClienteController@getCliente');
             Route::delete('/', 'ClienteController@deleteCliente');
+            Route::delete('/{cliente_id}', 'ClienteController@deleteCliente');
             Route::post('/', 'ClienteController@updateCliente');
 
             Route::get('banners', 'BannerController@getBanners');

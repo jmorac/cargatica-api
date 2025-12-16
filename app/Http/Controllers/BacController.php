@@ -59,8 +59,8 @@ class BacController extends Controller
                 //referencia, modopago,pagado,formaquepago,pagoesdolares,montopagado
                 $facturaData = ['referencia' => $authCode, 'pagado' => 1,'fecha_pagado'=>time(),'canal'=>1 ];
                 $factura->update($facturaData);
-                $results = DB::select('select S.BLNo,F.pagado from CT_SHIP S 
-                                              inner join CT_FACTURA_GUIAS FG on S.BLNo=FG.BLNo 
+                $results = DB::select('select S.BLNo,F.pagado from CT_SHIP S
+                                              inner join CT_FACTURA_GUIAS FG on S.BLNo=FG.BLNo
                                               inner join CT_facturas F on  FG.factura_id=F.id
 where FG.factura_id = ?', [$facturaId]);
                 $pagados=0;
@@ -115,7 +115,11 @@ where FG.factura_id = ?', [$facturaId]);
 
         $time = time();
         $cardNumber = $info->numero_tarjeta;
-        $cardExpiration = $info->mes_exp . $info->ano_exp;
+
+        $expMonth= str_pad($info->mes_exp, 2, '0', STR_PAD_LEFT);
+        $expYear= substr(trim($info->ano_exp), -2);
+
+        $cardExpiration = $expMonth . $expYear;
         $cardCVC = $info->cvs;
 
       //  $moneda = $info->moneda;
@@ -158,7 +162,7 @@ where FG.factura_id = ?', [$facturaId]);
                 $facturaIds[] = $fact->id;
 
                 $totalMonto=$fact->monto_total;
-                
+
                 if ($fact->esdolares) {
                     $totalMontoDolares = $totalMontoDolares + $totalMonto;
                     $totalMontoColones = $totalMontoColones + ($totalMonto * $tipoCambioColones);
