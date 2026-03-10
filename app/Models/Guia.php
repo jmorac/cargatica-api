@@ -1,33 +1,19 @@
 <?php
 
 namespace App\Models;
-use Sofa\Eloquence\Mappable;
-use Sofa\Eloquence\Eloquence;
+
 use Illuminate\Database\Eloquent\Model;
 use phpDocumentor\Reflection\Types\Boolean;
 
-
 class Guia extends Model {
 
-	use Eloquence, Mappable;
+    protected $primaryKey = 'BLNo';
+    public $timestamps = false;
 
-	protected $primaryKey = 'BLNo';
-	public    $timestamps = false;
-
-	protected $maps = [
-		'id'   => 'BLNo',
-		'numero' => 'BLNoVisual',
-		'ext_id' =>'idextguia',
-        'exporter'=>'Exporter',
-        'consignatario' => 'Consignee',
-        'numero_vuelo'  =>'flightnumber',
-        'factura_id'=>'facturaid',
-	];
-
-	protected $appends = [
-		'id',
-		'numero',
-		'ext_id',
+    protected $appends = [
+        'id',
+        'numero',
+        'ext_id',
         'exporter',
         'consignatario',
         'numero_vuelo',
@@ -39,16 +25,16 @@ class Guia extends Model {
         'pagado',
         'solicito_efectivo',
         'app_status'
-	];
+    ];
 
 
-	protected $hidden = [
-		'BLNo',
-		'BLNoVisual',
-		'idextguia',
-		'hide',
-		'manifestoidOLD',
-		'TEMPEXPORT',
+    protected $hidden = [
+        'BLNo',
+        'BLNoVisual',
+        'idextguia',
+        'hide',
+        'manifestoidOLD',
+        'TEMPEXPORT',
         'edited_date',
         'Exporter',
         'Consignee',
@@ -88,7 +74,7 @@ class Guia extends Model {
         'bodegaje',
         'seguro',
 
-	];
+    ];
 
 
      protected $with = ['agencia_estado'];
@@ -119,8 +105,40 @@ class Guia extends Model {
 	    return $this->belongsTo(StatusAgencia::class,'agencia_status', 'id');
     }
 
+    public function getIdAttribute()
+    {
+        return $this->BLNo;
+    }
 
+    public function getNumeroAttribute()
+    {
+        return $this->BLNoVisual;
+    }
 
+    public function getExtIdAttribute()
+    {
+        return $this->idextguia;
+    }
+
+    public function getExporterAttribute()
+    {
+        return $this->Exporter;
+    }
+
+    public function getConsignatarioAttribute()
+    {
+        return $this->Consignee;
+    }
+
+    public function getNumeroVueloAttribute()
+    {
+        return $this->flightnumber;
+    }
+
+    public function getFacturaIdAttribute()
+    {
+        return $this->facturaid;
+    }
 
     public function getAppStatusAttribute(){
 /*
@@ -261,7 +279,7 @@ class Guia extends Model {
         return $this->hasManyThrough(Factura::class, FacturaGuia::class,'BLNo' ,'id','BLNo','factura_id');
 
     }
-    
+
 
     /**
      * @return boolean
