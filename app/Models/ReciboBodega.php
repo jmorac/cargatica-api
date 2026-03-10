@@ -3,44 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Sofa\Eloquence\Eloquence;
-use Sofa\Eloquence\Mappable;
 
 class ReciboBodega extends Model
 {
 
-    use Eloquence, Mappable;
-
     protected $primaryKey = 'id';
     public $timestamps = false;
 
-    protected $maps = [
-        'notas_destino' => 'notasdestino',
-        'total_peso' => 'totalpeso',
-        'total_volumen' => 'totalvolumen',
-        'total_cu' => 'totalCU',
-        'total_items' => 'totalitems',
-        'tipo_embarque' => 'tipoembarque',
-        'total_paletas' => 'totalpaletas',
-        'fecha_autorizado_cliente' => 'autorizadoxcliente',
-        'consignatario_final' => 'consignatariofinal',
-        'id_ext' => 'idext',
-        'notas_usa' => 'notasusa',
-        'notas_cr' => 'notasCR',
-         'fecha_wh' => 'fechaWH',
-        'nota_cliente' => 'notacliente',
-        'fecha_autorizacion_cliente' => 'fechaclienteaut',
-        'valor_declarado' =>'Valor_Declarado',
-        'llego_cr' =>'llegoaCR',
-        'adjunto_factura_cliente' => 'cantidadfotoscliente',
-        'adjuntos_factura_servicio_cliente' => 'cantidadfotos',
-        'tiene_foto' => 'WHfoto',
-        'num_guia' => 'bl_id'
-
-    ];
-
     protected $appends = [
-        'notas_destino',
         'notas_destino',
         'total_peso',
         'total_volumen',
@@ -68,7 +38,7 @@ class ReciboBodega extends Model
         'fecha',
         'wh_rack',
         'nombrecliente',
-       /* 'clientes_id', */
+        /* 'clientes_id', */
         'compania_id',
         'fechaauto',
         'checked',
@@ -112,7 +82,7 @@ class ReciboBodega extends Model
         'Valor_Declarado',
         'llegoaCR',
         'cantidadfotos',
-         'WHfoto'
+        'WHfoto'
     ];
 
     protected $with = [
@@ -155,10 +125,109 @@ class ReciboBodega extends Model
 
     public function getUrlImgAttribute($value)
     {
-        if($this->WHfoto==0){
+        if ($this->WHfoto == 0) {
             return "";
         }
-        return env('WH_IMG_URL')."/".$this->idext."_canvas.png";
+        return env('WH_IMG_URL') . "/" . $this->idext . "_canvas.png";
     }
 
+    public function getNotasDestinoAttribute()
+    {
+        return $this->notasdestino;
+    }
+
+    public function getTotalPesoAttribute()
+    {
+        return $this->totalpeso;
+    }
+
+    public function getTotalVolumenAttribute()
+    {
+        return $this->totalvolumen;
+    }
+
+    public function getTotalCuAttribute()
+    {
+        return $this->totalCU;
+    }
+
+    public function getTotalItemsAttribute()
+    {
+        return $this->totalitems;
+    }
+
+    public function getTipoEmbarqueAttribute()
+    {
+        return $this->tipoembarque;
+    }
+
+    public function getTotalPaletasAttribute()
+    {
+        return $this->totalpaletas;
+    }
+
+    public function getFechaAutorizadoClienteAttribute()
+    {
+        return $this->autorizadoxcliente;
+    }
+
+    public function getConsignatarioFinalAttribute()
+    {
+        return $this->consignatariofinal;
+    }
+
+    public function getIdExtAttribute()
+    {
+        return $this->idext;
+    }
+
+    public function getNotasUsaAttribute()
+    {
+        return $this->notasusa;
+    }
+
+    public function getNotasCrAttribute()
+    {
+        return $this->notasCR;
+    }
+
+    public function getFechaWhAttribute()
+    {
+        return $this->fechaWH;
+    }
+
+    public function getNotaClienteAttribute()
+    {
+        return $this->notacliente;
+    }
+
+    public function getFechaAutorizacionClienteAttribute()
+    {
+        return $this->fechaclienteaut;
+    }
+
+    public function getValorDeclaradoAttribute()
+    {
+        return $this->Valor_Declarado;
+    }
+
+    public function getLlegoCrAttribute()
+    {
+        return $this->llegoaCR;
+    }
+
+    public function getAdjuntoFacturaClienteAttribute()
+    {
+        return $this->cantidadfotoscliente;
+    }
+
+    public function getTieneFotoAttribute()
+    {
+        return $this->WHfoto;
+    }
+
+    public function getNumGuiaAttribute()
+    {
+        return $this->bl_id;
+    }
 }

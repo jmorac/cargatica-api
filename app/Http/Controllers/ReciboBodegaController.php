@@ -44,9 +44,8 @@ class ReciboBodegaController extends Controller
         $guiaNumero = $r->get('guia_numero');
         $guiaId = $r->get('guia_id');
         $query = ReciboBodega::query()->where('cancelado', '=', 0)->orderBy('id', 'DESC');
-        $query = $autorizado !== null ? $autorizado ? $query->where('autorizado_cliente', '>', 0) : $query->where('bl_id', '=', 0) : $query;
-      //  $query = $autorizadoCliente !== null ? $autorizadoCliente ? $query->where('fecha_autorizado_cliente', '>', 0) : $query->where('fecha_autorizado_cliente', '=', 0) : $query;
-        $query = $autorizadoCliente !== null ? $autorizadoCliente ? $query->where('fecha_autorizado_cliente', '>', 0) : $query->where('fecha_autorizado_cliente', '=', 0) : $query;
+        $query = $autorizado !== null ? $autorizado ? $query->where('autorizadoxcliente', '>', 0) : $query->where('bl_id', '=', 0) : $query;
+        $query = $autorizadoCliente !== null ? $autorizadoCliente ? $query->where('autorizadoxcliente', '>', 0) : $query->where('autorizadoxcliente', '=', 0) : $query;
 
 
         $sixMonths = 60 * 60 * 24 * 30 * 6;
