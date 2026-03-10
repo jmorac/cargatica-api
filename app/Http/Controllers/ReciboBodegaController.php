@@ -69,7 +69,7 @@ class ReciboBodegaController extends Controller
 
         $query = $nineMonths ? $query->where('fechaWH', '>', time() - $nineMonths) : $query;
         // $query =   $query->where('cancelado', '<>', 1) ;
-        $query = $query->where('clientes_id', $cliente_id)->with('guia:id,numero,ext_id,exporter,consignatario,numero_vuelo,factura_id,fecha');
+        $query = $query->where('clientes_id', $cliente_id)->with('guia:BLNo,BLNoVisual,idextguia,Exporter,Consignee,flightnumber,facturaid,fecha');
 
         $recibos = $query->paginate($r->get('limit', 25));
         return $this->createOkResponse($recibos);
@@ -183,7 +183,7 @@ class ReciboBodegaController extends Controller
     {
         $cliente_id = Auth::user()->cliente_id;
 
-        $r = ReciboBodega::query()->where('clientes_id', $cliente_id)->where('idext', $ext_id)->with('guia:id,numero,ext_id,exporter,consignatario,numero_vuelo,factura_id,fecha')->firstOrFail();
+        $r = ReciboBodega::query()->where('clientes_id', $cliente_id)->where('idext', $ext_id)->with('guia:BLNo,BLNoVisual,idextguia,Exporter,Consignee,flightnumber,facturaid,fecha')->firstOrFail();
 
         return $this->createOkResponse($r);
     }

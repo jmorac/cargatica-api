@@ -150,7 +150,7 @@ class Guia extends Model {
 
  */
 
-        if ($this->fecha_factura=0  ){
+        if ($this->fecha_factura == 0) {
         //    return "APROBADAS"; //no se ha pagado
         }
 
