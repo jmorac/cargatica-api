@@ -125,109 +125,110 @@ class ReciboBodega extends Model
 
     public function getUrlImgAttribute($value)
     {
-        if ($this->WHfoto == 0) {
-            return "";
+        if ((int) $this->getAttribute('WHfoto') === 0) {
+            return '';
         }
-        return env('WH_IMG_URL') . "/" . $this->idext . "_canvas.png";
+
+        return env('WH_IMG_URL') . '/' . $this->getAttribute('idext') . '_canvas.png';
     }
 
     public function getNotasDestinoAttribute()
     {
-        return $this->notasdestino;
+        return $this->getAttribute('notasdestino');
     }
 
     public function getTotalPesoAttribute()
     {
-        return $this->totalpeso;
+        return $this->getAttribute('totalpeso');
     }
 
     public function getTotalVolumenAttribute()
     {
-        return $this->totalvolumen;
+        return $this->getAttribute('totalvolumen');
     }
 
     public function getTotalCuAttribute()
     {
-        return $this->totalCU;
+        return $this->getAttribute('totalCU');
     }
 
     public function getTotalItemsAttribute()
     {
-        return $this->totalitems;
+        return $this->getAttribute('totalitems');
     }
 
     public function getTipoEmbarqueAttribute()
     {
-        return $this->tipoembarque;
+        return $this->getAttribute('tipoembarque');
     }
 
     public function getTotalPaletasAttribute()
     {
-        return $this->totalpaletas;
+        return $this->getAttribute('totalpaletas');
     }
 
     public function getFechaAutorizadoClienteAttribute()
     {
-        return $this->autorizadoxcliente;
+        return $this->getAttribute('autorizadoxcliente');
     }
 
     public function getConsignatarioFinalAttribute()
     {
-        return $this->consignatariofinal;
+        return $this->getAttribute('consignatariofinal');
     }
 
     public function getIdExtAttribute()
     {
-        return $this->idext;
+        return $this->getAttribute('idext');
     }
 
     public function getNotasUsaAttribute()
     {
-        return $this->notasusa;
+        return $this->getAttribute('notasusa');
     }
 
     public function getNotasCrAttribute()
     {
-        return $this->notasCR;
+        return $this->getAttribute('notasCR');
     }
 
     public function getFechaWhAttribute()
     {
-        return $this->fechaWH;
+        return $this->getAttribute('fechaWH');
     }
 
     public function getNotaClienteAttribute()
     {
-        return $this->notacliente;
+        return $this->getAttribute('notacliente');
     }
 
     public function getFechaAutorizacionClienteAttribute()
     {
-        return $this->fechaclienteaut;
+        return $this->getAttribute('fechaclienteaut');
     }
 
     public function getValorDeclaradoAttribute()
     {
-        return $this->Valor_Declarado;
+        return $this->getAttribute('Valor_Declarado');
     }
 
     public function getLlegoCrAttribute()
     {
-        return $this->llegoaCR;
+        return $this->getAttribute('llegoaCR');
     }
 
     public function getAdjuntoFacturaClienteAttribute()
     {
-        return $this->cantidadfotoscliente;
+        return $this->getAttribute('cantidadfotoscliente');
     }
 
     public function getTieneFotoAttribute()
     {
-        return $this->WHfoto;
+        return $this->getAttribute('WHfoto');
     }
 
     public function getNumGuiaAttribute()
     {
-        return $this->bl_id;
+        return $this->getAttribute('bl_id');
     }
 }
