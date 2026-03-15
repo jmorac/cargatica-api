@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ReciboBodega extends Model
 {
-
     protected $primaryKey = 'id';
     public $timestamps = false;
 
@@ -89,146 +88,128 @@ class ReciboBodega extends Model
         'autorizado'
     ];
 
-    /**
-     * The attributes that aren't mass assignable.
-     *
-     * @var array
-     */
     protected $guarded = [
         'id'
     ];
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
     protected $table = 'CT_Productos';
 
-    /**
-     * @return BelongsTo
-     */
     public function guia()
     {
-
         return $this->belongsTo(Guia::class, 'bl_id', 'BLNo');
-
     }
-
 
     public function autorizado()
     {
-
         return $this->belongsTo(TipoEnvios::class, 'autorizadoenviar', 'id');
-
     }
 
     public function getUrlImgAttribute($value)
     {
-        if ((int) $this->getAttribute('WHfoto') === 0) {
+        if ((int) ($this->attributes['WHfoto'] ?? 0) === 0) {
             return '';
         }
 
-        return env('WH_IMG_URL') . '/' . $this->getAttribute('idext') . '_canvas.png';
+        return env('WH_IMG_URL') . '/' . ($this->attributes['idext'] ?? '') . '_canvas.png';
     }
 
     public function getNotasDestinoAttribute()
     {
-        return $this->getAttribute('notasdestino');
+        return $this->attributes['notasdestino'] ?? null;
     }
 
     public function getTotalPesoAttribute()
     {
-        return $this->getAttribute('totalpeso');
+        return $this->attributes['totalpeso'] ?? null;
     }
 
     public function getTotalVolumenAttribute()
     {
-        return $this->getAttribute('totalvolumen');
+        return $this->attributes['totalvolumen'] ?? null;
     }
 
     public function getTotalCuAttribute()
     {
-        return $this->getAttribute('totalCU');
+        return $this->attributes['totalCU'] ?? null;
     }
 
     public function getTotalItemsAttribute()
     {
-        return $this->getAttribute('totalitems');
+        return $this->attributes['totalitems'] ?? null;
     }
 
     public function getTipoEmbarqueAttribute()
     {
-        return $this->getAttribute('tipoembarque');
+        return $this->attributes['tipoembarque'] ?? null;
     }
 
     public function getTotalPaletasAttribute()
     {
-        return $this->getAttribute('totalpaletas');
+        return $this->attributes['totalpaletas'] ?? null;
     }
 
     public function getFechaAutorizadoClienteAttribute()
     {
-        return $this->getAttribute('autorizadoxcliente');
+        return $this->attributes['autorizadoxcliente'] ?? null;
     }
 
     public function getConsignatarioFinalAttribute()
     {
-        return $this->getAttribute('consignatariofinal');
+        return $this->attributes['consignatariofinal'] ?? null;
     }
 
     public function getIdExtAttribute()
     {
-        return $this->getAttribute('idext');
+        return $this->attributes['idext'] ?? null;
     }
 
     public function getNotasUsaAttribute()
     {
-        return $this->getAttribute('notasusa');
+        return $this->attributes['notasusa'] ?? null;
     }
 
     public function getNotasCrAttribute()
     {
-        return $this->getAttribute('notasCR');
+        return $this->attributes['notasCR'] ?? null;
     }
 
     public function getFechaWhAttribute()
     {
-        return $this->getAttribute('fechaWH');
+        return $this->attributes['fechaWH'] ?? null;
     }
 
     public function getNotaClienteAttribute()
     {
-        return $this->getAttribute('notacliente');
+        return $this->attributes['notacliente'] ?? null;
     }
 
     public function getFechaAutorizacionClienteAttribute()
     {
-        return $this->getAttribute('fechaclienteaut');
+        return $this->attributes['fechaclienteaut'] ?? null;
     }
 
     public function getValorDeclaradoAttribute()
     {
-        return $this->getAttribute('Valor_Declarado');
+        return $this->attributes['Valor_Declarado'] ?? null;
     }
 
     public function getLlegoCrAttribute()
     {
-        return $this->getAttribute('llegoaCR');
+        return $this->attributes['llegoaCR'] ?? null;
     }
 
     public function getAdjuntoFacturaClienteAttribute()
     {
-        return $this->getAttribute('cantidadfotoscliente');
+        return $this->attributes['cantidadfotoscliente'] ?? null;
     }
 
     public function getTieneFotoAttribute()
     {
-        return $this->getAttribute('WHfoto');
+        return $this->attributes['WHfoto'] ?? null;
     }
 
     public function getNumGuiaAttribute()
     {
-        return $this->getAttribute('bl_id');
+        return $this->attributes['bl_id'] ?? null;
     }
 }

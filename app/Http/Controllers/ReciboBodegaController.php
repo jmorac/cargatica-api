@@ -73,22 +73,64 @@ class ReciboBodegaController extends Controller
 
         $limit = min(max((int) $r->get('limit', 25), 1), 100);
 
+        $limit = min(max((int) $r->get('limit', 25), 1), 100);
+
         $recibos = $query->paginate($limit);
 
         $recibos->setCollection(
-            $recibos->getCollection()->map(function ($r) {
+            $recibos->getCollection()->map(function ($item) {
                 return [
-                    'id' => $r->id,
-                    'descripcion' => $r->descripcion,
-                    'tracking' => $r->tracking,
-                    'bl_id' => $r->bl_id,
+                    'id' => $item->getAttribute('id'),
+                    'descripcion' => $item->getAttribute('descripcion'),
+                    'tracking' => $item->getAttribute('tracking'),
+                    'bl_id' => $item->getAttribute('bl_id'),
+
+                    'embarcador' => $item->getAttribute('embarcador'),
+                    'bloqueado' => $item->getAttribute('bloqueado'),
+
+                    'notas_destino' => $item->getAttribute('notasdestino'),
+                    'total_peso' => $item->getAttribute('totalpeso'),
+                    'total_volumen' => $item->getAttribute('totalvolumen'),
+                    'total_cu' => $item->getAttribute('totalCU'),
+                    'total_items' => $item->getAttribute('totalitems'),
+                    'total_paletas' => $item->getAttribute('totalpaletas'),
+                    'tipo_embarque' => $item->getAttribute('tipoembarque'),
+                    'fecha_autorizado_cliente' => $item->getAttribute('autorizadoxcliente'),
+                    'consignatario_final' => $item->getAttribute('consignatariofinal'),
+                    'id_ext' => $item->getAttribute('idext'),
+                    'notas_usa' => $item->getAttribute('notasusa'),
+                    'notas_cr' => $item->getAttribute('notasCR'),
+                    'fecha_wh' => $item->getAttribute('fechaWH'),
+                    'nota_cliente' => $item->getAttribute('notacliente'),
+                    'fecha_autorizacion_cliente' => $item->getAttribute('fechaclienteaut'),
+                    'valor_declarado' => $item->getAttribute('Valor_Declarado'),
+                    'llego_cr' => $item->getAttribute('llegoaCR'),
+                    'adjunto_factura_cliente' => $item->getAttribute('cantidadfotoscliente'),
+                    'tiene_foto' => $item->getAttribute('WHfoto'),
+
+                    'url_img' => ((int) $item->getAttribute('WHfoto') === 0)
+                        ? ''
+                        : env('WH_IMG_URL') . '/' . $item->getAttribute('idext') . '_canvas.png',
+
+                    'num_guia' => $item->getAttribute('bl_id'),
+
+                    'guia' => $item->guia ? [
+                        'app_status' => $item->guia->app_status ?? null,
+                        'id' => $item->guia->BLNo ?? null,
+                        'numero' => $item->guia->BLNoVisual ?? null,
+                        'ext_id' => $item->guia->idextguia ?? null,
+                        'exporter' => $item->guia->Exporter ?? null,
+                        'consignatario' => $item->guia->Consignee ?? null,
+                        'numero_vuelo' => $item->guia->flightnumber ?? null,
+                        'factura_id' => $item->guia->facturaid ?? null,
+                        'fecha' => $item->guia->fecha ?? null,
+                    ] : null,
                 ];
             })
         );
 
         return $this->createOkResponse($recibos);
 
-        return $this->createOkResponse($recibos);
     }
 
 
