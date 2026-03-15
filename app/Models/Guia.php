@@ -3,10 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use phpDocumentor\Reflection\Types\Boolean;
 
-class Guia extends Model {
-
+class Guia extends Model
+{
     protected $primaryKey = 'BLNo';
     public $timestamps = false;
 
@@ -26,7 +25,6 @@ class Guia extends Model {
         'solicito_efectivo',
         'app_status'
     ];
-
 
     protected $hidden = [
         'BLNo',
@@ -68,260 +66,237 @@ class Guia extends Model {
         'clientnotified',
         'nombre_desalmacena',
         'cedula_desalmacena',
-        /*  'clienteid', */
+        /* 'clienteid', */
         'iscasillero',
         'fuel',
         'bodegaje',
         'seguro',
-
     ];
-
 
     protected $with = ['agencia_estado'];
 
-    /**
-     * The attributes that aren't mass assignable.
-     *
-     * @var array
-     */
     protected $guarded = [
         'BLNo'
     ];
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
     protected $table = 'CT_SHIP';
-
-    /**
-     * @return BelongsTo
-     */
 
     public function agencia_estado()
     {
-
-        return $this->belongsTo(StatusAgencia::class,'agencia_status', 'id');
+        return $this->belongsTo(StatusAgencia::class, 'agencia_status', 'id');
     }
 
     public function getIdAttribute()
     {
-        return $this->BLNo;
+        return $this->attributes['BLNo'] ?? null;
     }
 
     public function getNumeroAttribute()
     {
-        return $this->BLNoVisual;
+        return $this->attributes['BLNoVisual'] ?? null;
     }
 
     public function getExtIdAttribute()
     {
-        return $this->idextguia;
+        return $this->attributes['idextguia'] ?? null;
     }
 
     public function getExporterAttribute()
     {
-        return $this->Exporter;
+        return $this->attributes['Exporter'] ?? null;
     }
 
     public function getConsignatarioAttribute()
     {
-        return $this->Consignee;
+        return $this->attributes['Consignee'] ?? null;
     }
 
     public function getNumeroVueloAttribute()
     {
-        return $this->flightnumber;
+        return $this->attributes['flightnumber'] ?? null;
     }
 
     public function getFacturaIdAttribute()
     {
-        return $this->facturaid;
+        return $this->attributes['facturaid'] ?? null;
     }
 
-    public function getAppStatusAttribute(){
-        /*
-           $query = $asignadasEnviadasPorCliente!=null ? $asignadasEnviadasPorCliente ? $query->where('envio_cliente_id', '>', 0):$query->where('envio_cliente_id', '=', 0) : $query;
-                $query = $fechaFactura!=null ? $fechaFactura ? $query->where('fecha_factura', '>', 0):$query->where('fecha_factura', '=', 0) : $query;
-                $query = $entregado!=null ? $entregado? $query->where('entregado_id', '>', 0):  $query->where('entregado_id', '=', 0) : $query;
-                $query = $pagado!=null ? $pagado? $query->where('fecha_pagado', '>', 0):  $query->where('fecha_pagado', '=', 0) : $query;
-                $query = $listoParaRecoger!=null ? $listoParaRecoger? $query->where('listo_para_recoger', '>', 0):  $query->where('listo_para_recoger', '=', 0) : $query;
+    public function getAppStatusAttribute()
+    {
+        $envioClienteId = (int) ($this->attributes['envio_cliente_id'] ?? 0);
+        $entregadoId = (int) ($this->attributes['entregado_id'] ?? 0);
+        $fechaPagado = (int) ($this->attributes['fecha_pagado'] ?? 0);
+        $fechaFactura = (int) ($this->attributes['fecha_factura'] ?? 0);
+        $deseaPagarEfectivo = (int) ($this->attributes['desea_pagar_efectivo'] ?? 0);
 
-         */
-
-        if ($this->fecha_factura == 0) {
-            //    return "APROBADAS"; //no se ha pagado
+        if ($envioClienteId > 0 && $entregadoId === 0) {
+            return 'TRANSITO';
         }
 
-
-
-        if ($this->envio_cliente_id>0 && $this->entregado_id==0){
-            return "TRANSITO"; // en transito
+        if ($fechaPagado === 0 && $fechaFactura > 0 && $deseaPagarEfectivo === 0) {
+            return 'PENDIENTE_PAGAR';
         }
 
-        // if ($this->fecha_factura>0 && $this->desea_pagar_efectivo==0){
-        if ($this->fecha_pagado==0 && $this->fecha_factura>0 && $this->desea_pagar_efectivo==0){
-            return "PENDIENTE_PAGAR"; //no se ha pagado
-        }
-        if ($this->fecha_pagado>0 || $this->desea_pagar_efectivo>0){
-            return "PAGADOOCREDITO"; //no se ha pagado
+        if ($fechaPagado > 0 || $deseaPagarEfectivo > 0) {
+            return 'PAGADOOCREDITO';
         }
 
-        if ($this->fecha_pagado>0){
-            return "PAGADO"; // pagado
+        if ($fechaPagado > 0) {
+            return 'PAGADO';
         }
 
-        if ($this->envio_cliente_id>0 && $this->entregado_id==0){
-            return "LISTO_ENTREGAR"; // pagado
-        }
-        //TODO: REVISAR CAMPO
-        if ($this->entregado_id>0 ){
-            return "ENTREGADO"; //entregado
+        if ($envioClienteId > 0 && $entregadoId === 0) {
+            return 'LISTO_ENTREGAR';
         }
 
-        return "APROBADAS"; //Pendiente de aprobacion
+        if ($entregadoId > 0) {
+            return 'ENTREGADO';
+        }
+
+        return 'APROBADAS';
     }
 
+    public function getPiezasAttribute()
+    {
+        $repackage = (int) ($this->attributes['repackage'] ?? 0);
 
-    public function  getPiezasAttribute(){
-        if($this->repackage==1){
-            return $this->viewpcs;
+        if ($repackage === 1) {
+            return $this->attributes['viewpcs'] ?? null;
         }
-        return $this->pcs;
+
+        return $this->attributes['pcs'] ?? null;
     }
 
-    public function  getPesoAttribute(){
-        if($this->repackage==1){
-            return $this->viewweight;
+    public function getPesoAttribute()
+    {
+        $repackage = (int) ($this->attributes['repackage'] ?? 0);
+
+        if ($repackage === 1) {
+            return $this->attributes['viewweight'] ?? null;
         }
-        return $this->weight;
+
+        return $this->attributes['weight'] ?? null;
     }
 
-    public function  getPesoCubicoAttribute(){
-        if($this->repackage==1){
-            return $this->viewcuft;
+    public function getPesoCubicoAttribute()
+    {
+        $repackage = (int) ($this->attributes['repackage'] ?? 0);
+
+        if ($repackage === 1) {
+            return $this->attributes['viewcuft'] ?? null;
         }
-        return $this->cuft;
+
+        return $this->attributes['cuft'] ?? null;
     }
 
-    public function  getVolAttribute(){
-        if($this->repackage==1){
-            return $this->viewvolumen;
+    public function getVolAttribute()
+    {
+        $repackage = (int) ($this->attributes['repackage'] ?? 0);
+
+        if ($repackage === 1) {
+            return $this->attributes['viewvolumen'] ?? null;
         }
-        return $this->volumen;
+
+        return $this->attributes['volumen'] ?? null;
     }
 
-    public function  getTieneFacturaAttribute(){
-        if($this->facturaimportadora >0 ||
-            $this->facturacasillero  >0 ||
-            $this->facturareg >0 )
-        {
-            return true;
-        }
-        return false;
+    public function getTieneFacturaAttribute()
+    {
+        return (int) ($this->attributes['facturaimportadora'] ?? 0) > 0
+            || (int) ($this->attributes['facturacasillero'] ?? 0) > 0
+            || (int) ($this->attributes['facturareg'] ?? 0) > 0;
     }
 
-    public function  getCombustibleAttribute(){
-        if($this->fuel <0  )
-        {
+    public function getCombustibleAttribute()
+    {
+        $fuel = $this->attributes['fuel'] ?? null;
+
+        if ($fuel !== null && $fuel < 0) {
             return null;
         }
-        return $this->fuel;
+
+        return $fuel;
     }
 
-    public function  getCostoBodegajeAttribute(){
-        if($this->bodegaje <0  )
-        {
+    public function getCostoBodegajeAttribute()
+    {
+        $bodegaje = $this->attributes['bodegaje'] ?? null;
+
+        if ($bodegaje !== null && $bodegaje < 0) {
             return null;
         }
-        return $this->bodegaje;
+
+        return $bodegaje;
     }
 
-    public function  getCostoSeguroAttribute(){
-        if($this->seguro <0  )
-        {
+    public function getCostoSeguroAttribute()
+    {
+        $seguro = $this->attributes['seguro'] ?? null;
+
+        if ($seguro !== null && $seguro < 0) {
             return null;
         }
-        return $this->seguro;
+
+        return $seguro;
     }
 
-
-    /**
-     * @return BelongsTo
-     */
     public function historial()
     {
-
-        return $this->hasMany(GuiaHistorial::class,  'blno', 'BLNo');
-
+        return $this->hasMany(GuiaHistorial::class, 'blno', 'BLNo');
     }
 
-
-    /**
-     * @return BelongsTo
-     */
     public function warehouseReceipts()
     {
-
-        return $this->hasMany(ReciboBodega::class,  'bl_id', 'BLNo');
-
+        return $this->hasMany(ReciboBodega::class, 'bl_id', 'BLNo');
     }
 
-
-
-    /**
-     * @return BelongsTo
-     */
     public function facturas()
     {
-
-        return $this->hasManyThrough(Factura::class, FacturaGuia::class,'BLNo' ,'id','BLNo','factura_id');
-
+        return $this->hasManyThrough(
+            Factura::class,
+            FacturaGuia::class,
+            'BLNo',
+            'id',
+            'BLNo',
+            'factura_id'
+        );
     }
 
-
-    /**
-     * @return boolean
-     */
-
-    public function getPagadoAttribute(): Bool
+    public function getPagadoAttribute(): bool
     {
+        $facturas = $this->relationLoaded('facturas')
+            ? $this->facturas
+            : $this->facturas()->get();
 
-        $facturas=$this->facturas();
-
-        if($facturas->count()==0){
+        if ($facturas->isEmpty()) {
             return false;
         }
 
-        foreach ($facturas->get() as $factura){
-            if($factura->pagado!=1){
+        foreach ($facturas as $factura) {
+            if ((int) $factura->pagado !== 1) {
                 return false;
             }
         }
-        return true;
 
+        return true;
     }
 
-
-    public function getSolicitoEfectivoAttribute(): Bool
+    public function getSolicitoEfectivoAttribute(): bool
     {
+        $facturas = $this->relationLoaded('facturas')
+            ? $this->facturas
+            : $this->facturas()->get();
 
-        $facturas=$this->facturas();
-
-        if($facturas->count()==0){
+        if ($facturas->isEmpty()) {
             return false;
         }
 
-        foreach ($facturas->get() as $factura){
-            if($factura->desea_pagar_efectivo!=1){
+        foreach ($facturas as $factura) {
+            if ((int) $factura->desea_pagar_efectivo !== 1) {
                 return false;
             }
         }
+
         return true;
-
     }
-
-
-
 }
