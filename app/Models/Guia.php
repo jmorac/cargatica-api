@@ -68,7 +68,7 @@ class Guia extends Model {
         'clientnotified',
         'nombre_desalmacena',
         'cedula_desalmacena',
-      /*  'clienteid', */
+        /*  'clienteid', */
         'iscasillero',
         'fuel',
         'bodegaje',
@@ -77,32 +77,32 @@ class Guia extends Model {
     ];
 
 
-     protected $with = ['agencia_estado'];
+    protected $with = ['agencia_estado'];
 
     /**
-	 * The attributes that aren't mass assignable.
-	 *
-	 * @var array
-	 */
-	protected $guarded = [
-		'BLNo'
-	];
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = [
+        'BLNo'
+    ];
 
-	/**
-	 * The table associated with the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'CT_SHIP';
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'CT_SHIP';
 
     /**
      * @return BelongsTo
      */
 
-	public function agencia_estado()
+    public function agencia_estado()
     {
 
-	    return $this->belongsTo(StatusAgencia::class,'agencia_status', 'id');
+        return $this->belongsTo(StatusAgencia::class,'agencia_status', 'id');
     }
 
     public function getIdAttribute()
@@ -141,17 +141,17 @@ class Guia extends Model {
     }
 
     public function getAppStatusAttribute(){
-/*
-   $query = $asignadasEnviadasPorCliente!=null ? $asignadasEnviadasPorCliente ? $query->where('envio_cliente_id', '>', 0):$query->where('envio_cliente_id', '=', 0) : $query;
-        $query = $fechaFactura!=null ? $fechaFactura ? $query->where('fecha_factura', '>', 0):$query->where('fecha_factura', '=', 0) : $query;
-        $query = $entregado!=null ? $entregado? $query->where('entregado_id', '>', 0):  $query->where('entregado_id', '=', 0) : $query;
-        $query = $pagado!=null ? $pagado? $query->where('fecha_pagado', '>', 0):  $query->where('fecha_pagado', '=', 0) : $query;
-        $query = $listoParaRecoger!=null ? $listoParaRecoger? $query->where('listo_para_recoger', '>', 0):  $query->where('listo_para_recoger', '=', 0) : $query;
+        /*
+           $query = $asignadasEnviadasPorCliente!=null ? $asignadasEnviadasPorCliente ? $query->where('envio_cliente_id', '>', 0):$query->where('envio_cliente_id', '=', 0) : $query;
+                $query = $fechaFactura!=null ? $fechaFactura ? $query->where('fecha_factura', '>', 0):$query->where('fecha_factura', '=', 0) : $query;
+                $query = $entregado!=null ? $entregado? $query->where('entregado_id', '>', 0):  $query->where('entregado_id', '=', 0) : $query;
+                $query = $pagado!=null ? $pagado? $query->where('fecha_pagado', '>', 0):  $query->where('fecha_pagado', '=', 0) : $query;
+                $query = $listoParaRecoger!=null ? $listoParaRecoger? $query->where('listo_para_recoger', '>', 0):  $query->where('listo_para_recoger', '=', 0) : $query;
 
- */
+         */
 
         if ($this->fecha_factura == 0) {
-        //    return "APROBADAS"; //no se ha pagado
+            //    return "APROBADAS"; //no se ha pagado
         }
 
 
@@ -160,9 +160,9 @@ class Guia extends Model {
             return "TRANSITO"; // en transito
         }
 
-       // if ($this->fecha_factura>0 && $this->desea_pagar_efectivo==0){
-       if ($this->fecha_pagado==0 && $this->fecha_factura>0 && $this->desea_pagar_efectivo==0){
-                return "PENDIENTE_PAGAR"; //no se ha pagado
+        // if ($this->fecha_factura>0 && $this->desea_pagar_efectivo==0){
+        if ($this->fecha_pagado==0 && $this->fecha_factura>0 && $this->desea_pagar_efectivo==0){
+            return "PENDIENTE_PAGAR"; //no se ha pagado
         }
         if ($this->fecha_pagado>0 || $this->desea_pagar_efectivo>0){
             return "PAGADOOCREDITO"; //no se ha pagado
@@ -184,12 +184,12 @@ class Guia extends Model {
     }
 
 
-     public function  getPiezasAttribute(){
-	    if($this->repackage==1){
-	        return $this->viewpcs;
+    public function  getPiezasAttribute(){
+        if($this->repackage==1){
+            return $this->viewpcs;
         }
         return $this->pcs;
-     }
+    }
 
     public function  getPesoAttribute(){
         if($this->repackage==1){
@@ -214,10 +214,10 @@ class Guia extends Model {
 
     public function  getTieneFacturaAttribute(){
         if($this->facturaimportadora >0 ||
-           $this->facturacasillero  >0 ||
+            $this->facturacasillero  >0 ||
             $this->facturareg >0 )
         {
-           return true;
+            return true;
         }
         return false;
     }
