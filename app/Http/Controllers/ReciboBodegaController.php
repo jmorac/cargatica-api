@@ -71,7 +71,23 @@ class ReciboBodegaController extends Controller
         // $query =   $query->where('cancelado', '<>', 1) ;
         $query = $query->where('clientes_id', $cliente_id)->with('guia:BLNo,BLNoVisual,idextguia,Exporter,Consignee,flightnumber,facturaid,fecha');
 
-        $recibos = $query->paginate($r->get('limit', 25));
+        $limit = min(max((int) $r->get('limit', 25), 1), 100);
+
+        $recibos = $query->paginate($limit);
+
+        $recibos->setCollection(
+            $recibos->getCollection()->map(function ($r) {
+                return [
+                    'id' => $r->id,
+                    'descripcion' => $r->descripcion,
+                    'tracking' => $r->tracking,
+                    'bl_id' => $r->bl_id,
+                ];
+            })
+        );
+
+        return $this->createOkResponse($recibos);
+
         return $this->createOkResponse($recibos);
     }
 
