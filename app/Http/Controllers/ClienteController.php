@@ -440,7 +440,7 @@ class ClienteController extends Controller
             'exoneracion_porcentaje' => 0,
             'balance_colones' => 0,
             'balance_dolares' => 0,
-            'deleted_cliente' => '0000-00-00 00:00:00'
+            'deleted_cliente' => null,
         ]);
 
         $id = \DB::table('CT_Clientes')->insertGetId($cliente);
