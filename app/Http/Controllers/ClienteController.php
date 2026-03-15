@@ -389,6 +389,7 @@ class ClienteController extends Controller
             'contrasena' => 'required',
             'telefono1' => 'required',
             'email' => ['required', 'email',
+
                 Rule::unique('CT_Clientes', 'email')
             ],
 
@@ -413,9 +414,42 @@ class ClienteController extends Controller
             'tipo_cedula',
             'compania_id');
 
-        $cliente = array_merge($cliente, ['nombre' => $nombre]);
-        $nuevoCliente = Cliente::create($cliente);
-        $nuevoCliente->update(['casillero' => \DB::raw('id')]);
+        $cliente = array_merge($cliente, [
+            'nombre' => $nombre,
+            'nombre_factura' => '',
+            'email_facturacion' => '',
+            'pin' => '',
+            'consignatariofinal' => '',
+            'contacto' => '',
+            'altemail' => '',
+            'default_oficina_id' => 0,
+            'wh_rack' => '',
+            'forgot_pass_token' => '',
+            'salt' => '',
+            'alert_WH' => '',
+            'lastchange' => time(),
+            'referido' => '',
+            'codigo_actividad_receptor' => '',
+            'exoneracion_tipo_doc' => '',
+            'exoneracion_num_doc' => '',
+            'exoneracion_articulo' => '',
+            'exoneracion_inciso' => '',
+            'exoneracion_nombre_inst' => '',
+            'exoneracion_nombre_inst_otro' => '',
+            'exoneracion_fecha_emision' => '',
+            'exoneracion_porcentaje' => 0,
+            'balance_colones' => 0,
+            'balance_dolares' => 0,
+        ]);
+
+        $id = \DB::table('CT_Clientes')->insertGetId($cliente);
+
+        \DB::table('CT_Clientes')
+            ->where('id', $id)
+            ->update([
+                'casillero' => $id,
+            ]);
+
 
         $contrasena = $request->get('contrasena');
         $email = $request->get("email");
