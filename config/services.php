@@ -21,7 +21,10 @@ return [
     'resend' => [
         'key' => env('RESEND_KEY'),
     ],
-
+    'email_server_api' => [
+        'url' => env('EMAIL_SERVER_API'),
+        'token' => env('EMAIL_SERVER_API_TOKEN'),
+    ],
     'ses' => [
         'key' => env('AWS_ACCESS_KEY_ID'),
         'secret' => env('AWS_SECRET_ACCESS_KEY'),

@@ -12,6 +12,8 @@
 <body class="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900">
 <main class="text-center">
     CargaTica API - {{ config('app.name', 'Cargatica API') }}
+    php version: {{ phpversion() }} <br>
+     Laravel version: {{ app()->version() }}
 </main>
 </body>
 </html>
