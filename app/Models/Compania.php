@@ -22,7 +22,7 @@ class Compania extends Model {
 
 	];
 
- 
+
         protected $visible = [
 
             'id',
@@ -32,6 +32,7 @@ class Compania extends Model {
             'dominio',
             'direccion',
             'direccion2',
+            'email',
             'activo'
 
         ];
