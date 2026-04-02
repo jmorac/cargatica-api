@@ -533,7 +533,10 @@ class ClienteController extends Controller
             return $this->createValidatorErrorResponse($validator);
         }
 
-        $duplicateEmail = Cliente::query()->where('id', '<>', $cliente_id)->where('email', $r->get('email'))->count();
+        $duplicateEmail = Cliente::query()
+            ->where('id', '<>', $cliente_id)
+            ->where('email', $r->get('email'))
+            ->exists();
 
         if ($duplicateEmail) {
             return $this->createErrorResponse('Algun otra cuenta utiliza ese correo', null);
