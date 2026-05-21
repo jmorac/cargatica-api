@@ -77,6 +77,23 @@ class ReciboBodegaController extends Controller
 
         $recibos = $query->paginate($limit);
 
+        $blId = 327303;
+
+        dd([
+            'by_BLNo' => Guia::query()
+                ->where('BLNo', $blId)
+                ->first(),
+
+            'by_BLNoVisual' => Guia::query()
+                ->where('BLNoVisual', $blId)
+                ->first(),
+
+            'by_idextguia' => Guia::query()
+                ->where('idextguia', $blId)
+                ->first(),
+        ]);
+
+
         $recibos->setCollection(
             $recibos->getCollection()->map(function ($item) {
                 return [
